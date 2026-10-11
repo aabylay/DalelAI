@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dalel AI — data infrastructure for superintelligent models</title>
-  <meta name="description" content="Dalel AI builds data infrastructure for superintelligent models and agents. We are starting with a vector database of objects, then public collections for science, law, and news." />
+  <meta name="description" content="Dalel AI builds an object database and semantic operators for superintelligent models and agents." />
   <link rel="icon" href="/assets/mark.png" type="image/png" />
   <link rel="canonical" href="https://dalel.ai/" />
   <meta property="og:title" content="Dalel AI" />
-  <meta property="og:description" content="Data infrastructure for superintelligent models and the agentic era." />
+  <meta property="og:description" content="An object database, and semantic operators over the vectors it stores." />
   <meta property="og:url" content="https://dalel.ai/" />
   <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,7 +21,7 @@
     "@type": "Organization",
     "name": "Dalel AI",
     "url": "https://dalel.ai",
-    "email": "abylay@dalel.ai",
+    "email": "info@dalel.ai",
     "description": "Data infrastructure for superintelligent models and agents."
   }
   </script>
@@ -37,7 +37,7 @@
     </a>
     <nav class="site-nav" aria-label="Primary">
       <a href="/master-plan/">Master plan</a>
-      <a class="mail" href="mailto:abylay@dalel.ai">abylay@dalel.ai</a>
+      <a class="mail" href="mailto:info@dalel.ai">info@dalel.ai</a>
     </nav>
   </header>
 
@@ -47,7 +47,7 @@
         <p class="kicker">Dalel AI</p>
         <h1>Data infrastructure for superintelligent models.</h1>
         <p class="lede">
-          In the agentic era, the limit is context. Models can think farther than they can find, compare, and hold the right memory. Dalel builds that memory: faster context management, and data systems shaped for the way agents actually work.
+          Agents are limited by the memory they can find, compare, and decide over. Dalel builds that memory: an object database, and semantic operators that read the vectors it stores.
         </p>
       </div>
       <figure class="figure">
@@ -81,7 +81,7 @@
           </g>
         </svg>
         <figcaption>
-          A review is one vector and three objects: the person who wrote it, the film it describes, and the year it belongs to.
+          A review is one vector and three objects: the person, the film, and the year.
         </figcaption>
       </figure>
     </section>
@@ -90,27 +90,27 @@
       <li>
         <span class="num">01</span>
         <div>
-          <h2>A database of objects</h2>
+          <h2>Objects that share vectors</h2>
           <p>
-            Vectors live in a collection, with their own metadata. An object is a subset of that collection: a paper, a statute, a person, a stretch of time. There are many object types, and one vector may belong to several of them at once.
+            Vectors live in one collection. An object is a subset: a paper, a person, a statute, a period. One vector can belong to several objects at once.
           </p>
         </div>
       </li>
       <li>
         <span class="num">02</span>
         <div>
-          <h2>Find a similar thing</h2>
+          <h2>Find a similar object</h2>
           <p>
-            Filtered vector search remains. The query we are adding is similarity between objects. A case, a body of work, or a period can be compared as a whole, under more than one way of measuring distance between sets.
+            Filtered vector search stays. The other query asks which object resembles this one. The nearest vector can belong to the wrong object. The score is a distance between sets, and the index approximates it. Several designs will be tried.
           </p>
         </div>
       </li>
       <li>
         <span class="num">03</span>
         <div>
-          <h2>Public memory, then model state</h2>
+          <h2>Semantic operators</h2>
           <p>
-            After the database, we will publish collections the world already shares: science, law, and news, open under rate limits. Later, stored key-value caches for open models, so context that has been read does not have to be computed again.
+            Operators run on the vectors already stored. “Which of these discuss this topic” is a decision. The vectors stay fixed. The model returns a decision, not a new embedding and not generated text.
           </p>
         </div>
       </li>
@@ -118,14 +118,14 @@
 
     <section class="closing">
       <p>
-        Dalel AI is this company. This site says who we are and what we are building. The argument is written out in the master plan.
+        Public collections for science, law, and news come after the database, under rate limits. Stored model state comes after that. The argument is in the master plan.
       </p>
       <a class="text-link" href="/master-plan/">Read the master plan</a>
     </section>
 
     <footer class="site-footer">
       <span>Dalel AI</span>
-      <a href="mailto:abylay@dalel.ai">abylay@dalel.ai</a>
+      <a href="mailto:info@dalel.ai">info@dalel.ai</a>
     </footer>
   </main>
 </body>

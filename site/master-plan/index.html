@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Master plan — Dalel AI</title>
-  <meta name="description" content="Why Dalel is building a vector database of objects, public collections for science, law, and news, and later shared model state for open models." />
+  <meta name="description" content="Dalel is building an object database and semantic operators for the memory layer under superintelligent models and agents." />
   <link rel="icon" href="/assets/mark.png" type="image/png" />
   <link rel="canonical" href="https://dalel.ai/master-plan/" />
   <meta property="og:title" content="Master plan — Dalel AI" />
-  <meta property="og:description" content="Context is the scarce resource. This is the plan for the data layer underneath superintelligent models and agents." />
+  <meta property="og:description" content="Objects that share vectors, similarity between those objects, and semantic operators over the stored vectors." />
   <meta property="og:url" content="https://dalel.ai/master-plan/" />
   <meta property="og:type" content="article" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -27,21 +27,17 @@
     </a>
     <nav class="site-nav" aria-label="Primary">
       <a href="/master-plan/" aria-current="page">Master plan</a>
-      <a class="mail" href="mailto:abylay@dalel.ai">abylay@dalel.ai</a>
+      <a class="mail" href="mailto:info@dalel.ai">info@dalel.ai</a>
     </nav>
   </header>
 
   <main id="content" class="doc">
     <nav class="doc-nav" aria-label="On this page">
-      <a href="#constraint">The constraint</a>
       <a href="#objects">Objects</a>
-      <a href="#membership">Membership</a>
-      <a href="#similarity">Similarity</a>
-      <a href="#indexes">Indexes</a>
+      <a href="#similarity">Similar objects</a>
+      <a href="#operators">Semantic operators</a>
       <a href="#public">Public memory</a>
-      <a href="#state">Model state</a>
-      <a href="#sequence">Sequence</a>
-      <a href="#company">The company</a>
+      <a href="#sequence">Order of work</a>
     </nav>
 
     <div>
@@ -53,96 +49,64 @@
 
       <article>
         <p>
-          Dalel builds data infrastructure for superintelligent models and for the agents that will work beside them. This document is the reason for the work and the order in which we will do it. Algorithms, hardware, and schemas belong in a later design. What follows is the discovery we are organizing a company around.
-        </p>
-
-        <h2 id="constraint">The constraint</h2>
-        <p>
-          Model capability is compounding. The machinery of context is not. An agent that can reason across a field still has to assemble that field: the papers, the statute, the person, the prior decision, the years in which a rule was alive. Today that assembly is a prompt, a bag of retrieved fragments, and whatever happened to fit.
+          Dalel builds data infrastructure for superintelligent models and the agents beside them. Two systems. An object database, then semantic operators that read the vectors it stores. This page is the reason, and the order of work.
         </p>
         <p>
-          Superintelligent systems will keep many objects in play at once. They will compare one thing with another thing, and they will return to the same corpus thousands of times a day. When that is the workload, the scarce resource is shared memory and the speed at which it can be addressed. Faster context management, and stricter data management, are the whole problem.
+          Agents keep many things in play and return to the same corpus all day. What they lack is shared memory, and a fast way to address it.
         </p>
 
         <h2 id="objects">Objects</h2>
         <p>
-          A vector database usually stores points. Each point may carry metadata, and a query may filter on it. That answers “which passage is close to this passage.” It does not represent the thing the passage is about.
+          Vectors live in one collection, with their own metadata. An object is a subset of that collection. A paper, a person, a statute, and a period of time are objects. There are many object types.
         </p>
         <p>
-          We start from a different unit. Vectors are stored in a collection. An object is a subset of that collection. A film is an object. A viewer is an object. A paper, a court, a statute, and a decade are objects. Object types multiply, because the world is not one table.
-        </p>
-        <p>
-          The collection stays the physical store. Objects are how the collection is understood. Search can still ask for nearby vectors. It can also ask for a nearby object, which is a different question and the one agents will ask once they are trying to manage a situation rather than a paragraph.
+          One vector can belong to several objects. The embedding of a review is about the film and about the person who wrote it. A judicial opinion is about a case, a doctrine, a court, and a year. The year can be an object of its own. Membership in several objects is the ordinary case, so the data model allows it from the start.
         </p>
 
-        <h2 id="membership">One vector, several objects</h2>
+        <h2 id="similarity">Similar objects</h2>
         <p>
-          The useful fact is that a single vector is often evidence for more than one thing.
+          Filtered vector search stays. The other query is which object resembles this one: which matter, which body of work, which period.
         </p>
         <p>
-          The embedding of a film review is about the film and about the person who wrote it. A judicial opinion is about a case, a doctrine, a court, and a year. The year can be an object of its own: a period you can compare with another period. Forcing every vector to name a single parent throws that structure away, and then every later query has to reconstruct it by hand.
+          The nearest vector is a weak guide. It can sit inside the wrong object, while another object matches better because every part of the query matches inside it.
         </p>
         <p>
-          Membership in several object types is the ordinary case. The data model has to allow it from the beginning, or the public collections we want to publish will be bent around an early mistake.
-        </p>
-
-        <h2 id="similarity">Similarity between things</h2>
-        <p>
-          “Find a similar vector, possibly inside a filter” remains a necessary operation. It is the operation current systems already perform.
-        </p>
-        <p>
-          The operation they leave to the application is “find a similar object.” Which matter resembles this matter. Which researcher’s body of work sits near this one. Which stretch of legislation moved the way another stretch moved. Those questions compare sets of vectors. A case file and a scientific literature do not want the same comparison, so more than one distance between sets has to be available. The caller should be able to say what “similar thing” means for the object in front of them.
-        </p>
-        <p>
-          This is the query that makes context cheap. An agent spends its window on the objects that matter, because the database already knows how to rank objects.
+          Scores that compare a query with one record already exist. They assume each vector has a single parent. A vector in this database does not. The score is a distance between sets. Earth mover’s distance and chamfer distance are two of them. An index approximates that distance so the search can name an object. Several index designs will be tried. They are alternatives, not one required layout. Exact set distance remains the final score. The same indexes have to run on accelerators and on disk, where large collections actually live.
         </p>
 
-        <h2 id="indexes">Indexes that know what belongs together</h2>
+        <h2 id="operators">Semantic operators</h2>
         <p>
-          Global indexes over a whole collection are still required. Scale lives there. What changes is that belonging is part of the index, alongside nearness.
+          The second system runs on vectors that are already stored. A semantic filter asks whether a predicate holds. Which emails discuss this topic. Which papers concern this method. The same pattern covers operators beyond filters.
         </p>
         <p>
-          Vectors that constitute the same object have a relationship even when they are far apart in embedding space. A film’s dialogue, its poster, and a review of it may sit in different neighborhoods and still be one object. An index that can use that relationship will retrieve the object. An index that only knows geometric neighbors will retrieve a cloud of fragments and leave the agent to glue them back together.
-        </p>
-        <p>
-          The same commitment covers where the bytes live. Large collections will sit on accelerators and on disk. The index has to be shaped for both. That is a direction of work, named here so the data model is not designed as if memory were free and uniform. The techniques themselves are for the technical design.
+          The stored vectors stay fixed. A new embedding for each predicate, or a stored embedding per operator, is the costly path. A model reads the query and a stored vector, or a stored vector group, and returns a decision. It is trained across the space of predicates. Large language models check those decisions during training. The output is a decision, not generated text.
         </p>
 
         <h2 id="public">Public memory</h2>
         <p>
-          A private index inside one lab does not fix a problem every agent will share. Science, law, and the news are common context. We will publish collections over them, on the object model above, with rate limits that keep research possible and the service standing.
+          A private index does not fix a problem every agent will share. After the database works, we publish collections for science, law, and news, under rate limits. Science begins with the articles researchers already treat as the record, such as arXiv and PubMed. Law is legislation and case documents. News is the public account of events.
         </p>
         <p>
-          Science: the articles researchers already treat as the record, beginning with corpora such as arXiv and PubMed. Law: legislation and case documents, so a system can find a similar matter. News: the public account of events. Further domains when the same pattern holds and the source can be redistributed honestly.
-        </p>
-        <p>
-          These collections are memory other systems query. They are a public utility for the agentic era, with the database underneath them good enough that “similar paper,” “similar case,” and “similar period” are direct questions.
-        </p>
-
-        <h2 id="state">Model state, after the collections</h2>
-        <p>
-          Retrieval is half of the cost of context. The other half is computation the model repeats. Open models recompute attention over the same prefixes: the same statute, the same paper, the same instructions. Once a prefix has been read, its key-value state is data. It can be stored, addressed, and reused.
-        </p>
-        <p>
-          We will do that after the database and the public collections exist, for open-source models. Shared model state belongs next to shared text. An agent should pay to read a document once.
+          After those collections, stored key-value state for open models. A document that has been read once should not be recomputed on every request.
         </p>
 
         <h2 id="sequence">Order of work</h2>
         <ol>
-          <li>The database. Collections of vectors. Objects as subsets. Many object types. Vectors that participate in several objects. Vector search, and search for a similar object, with more than one way to compare sets. Indexes over the collection that also connect the members of an object, built with accelerators and disk in mind.</li>
-          <li>Public collections under rate limits: science, law, and news.</li>
+          <li>The object database. Shared membership. Search for a similar object, with set distance as the score and more than one index design on trial.</li>
+          <li>Semantic operators over the vectors that database stores.</li>
+          <li>Public collections for science, law, and news.</li>
           <li>Stored key-value state for open models.</li>
         </ol>
         <p>
-          Each stage is usable before the next one starts. The database has to be real before a public corpus is worth trusting. The corpus has to be real before cached model state has a shared place to live.
+          Each stage is usable before the next one starts.
         </p>
 
         <h2 id="company">Who we are</h2>
         <p>
-          Dalel AI is the company building this. The site exists to say so. There is no account system here, and no product to sign into. The work in front of us is the memory layer.
+          Dalel AI is the company building this. This site describes the work. There is no account system here.
         </p>
         <p>
-          Correspondence: <a href="mailto:abylay@dalel.ai">abylay@dalel.ai</a>.
+          Correspondence: <a href="mailto:info@dalel.ai">info@dalel.ai</a>.
         </p>
       </article>
 
